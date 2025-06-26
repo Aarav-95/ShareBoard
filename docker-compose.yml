@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - '3000:3000'
+    # for live-reload in dev:
+    volumes:
+      - .:/app
+    command: npm run dev
+
+  # redis:                       # we'll hook this up on Day 4
+  #   image: redis:alpine
+  #   ports:
+  #     - '6379:6379'
