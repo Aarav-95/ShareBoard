@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TypeAnimation } from 'react-type-animation';
-import { Box, Container, Typography, TextField, Button, Stack } from '@mui/material';
+import { Box, Container, Typography, TextField, Button, Stack, Divider } from '@mui/material';
+import Features from '../components/featureSection';
 
 const HomePage: React.FC = () => {
   const [roomId, setRoomId] = useState<string>('');
@@ -20,6 +21,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
+    <>
     <Box
       sx={{
         minHeight: '100vh',
@@ -101,8 +103,12 @@ const HomePage: React.FC = () => {
                 textTransform: 'none',
                 fontSize: '1rem',
                 fontWeight: 700,
-                borderColor: '#6c63ff',
-                color: '#6c63ff',
+                borderColor: 'purple',
+                color: 'purple',
+                '&:hover': {
+                  backgroundColor: 'rgba(128, 0, 128, 0.1)',
+                  borderColor: 'purple',
+                },
               }}
             >
               Join
@@ -111,6 +117,14 @@ const HomePage: React.FC = () => {
         </Stack>
       </Container>
     </Box>
+    <Divider
+        sx={{
+          backgroundColor: '#ffffff',
+          height: 2,              // makes it a bit more visible
+        }}
+      />
+    <Features />
+    </>
   );
 };
 
