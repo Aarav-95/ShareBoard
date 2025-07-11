@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
-import { Box, IconButton, Slider, Tooltip, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, IconButton, Slider, Tooltip, FormControl, InputLabel, Select, MenuItem, TextField, Popover } from '@mui/material';
 import BrushIcon from '@mui/icons-material/Brush';
 import FormatColorResetIcon from '@mui/icons-material/FormatColorReset';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import TitleIcon from '@mui/icons-material/Title';
+import { SketchPicker, ColorResult } from "react-color";
 
 interface ToolbarProps {
   penColor: string;
@@ -47,6 +48,20 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onFontSizeChange,
   onTextInputChange,
 }) => {
+  const [penAnchor, setPenAnchor] = useState<null | HTMLElement>(null);
+  const [bgAnchor, setBgAnchor] = useState<null | HTMLElement>(null);
+
+  const openPenPicker = (e: React.MouseEvent<HTMLElement>) => setPenAnchor(e.currentTarget);
+  const closePenPicker = () => setPenAnchor(null);
+  const penOpen = Boolean(penAnchor);
+
+  const openBgPicker = (e: React.MouseEvent<HTMLElement>) => setBgAnchor(e.currentTarget);
+  const closeBgPicker = () => setBgAnchor(null);
+  const bgOpen = Boolean(bgAnchor);
+
+  const handlePenChange = (color: ColorResult) => onPenColorChange(color.hex);
+  const handleBgChange  = (color: ColorResult) => onBgColorChange(color.hex);
+
   return (
     <Box
       sx={{
@@ -117,25 +132,59 @@ const Toolbar: React.FC<ToolbarProps> = ({
             </IconButton>
           </Tooltip>
           <Tooltip title="Pen Color">
-            <IconButton component="label">
-              <input type="color" value={penColor} onChange={(e) => onPenColorChange(e.target.value)} hidden />
-              <ColorLensIcon htmlColor={penColor} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Background Color">
-            <IconButton component="label">
-              <input type="color" value={bgColor} onChange={(e) => onBgColorChange(e.target.value)} hidden />
+            <IconButton onClick={openPenPicker} size="small" aria-label="Choose pen color">
               <Box
                 sx={{
-                  width: 24,
-                  height: 24,
-                  bgcolor: bgColor,
-                  borderRadius: '50%',
-                  border: '1px solid #ccc',
+                  width: 20,
+                  height: 20,
+                  bgcolor: penColor,
+                  borderRadius: "50%",
+                  border: "1px solid #ccc",
                 }}
               />
             </IconButton>
           </Tooltip>
+
+          {/* Popover for PenColor */}
+          <Popover
+            open={penOpen}
+            anchorEl={penAnchor}
+            onClose={closePenPicker}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <SketchPicker
+              color={penColor}
+              onChange={handlePenChange}
+            />
+          </Popover>
+
+
+          <Tooltip title="Background Color">
+            <IconButton onClick={openBgPicker} size="small" aria-label="Choose background color">
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  bgcolor: bgColor,
+                  borderRadius: "50%",
+                  border: "1px solid #ccc",
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+
+          <Popover
+            open={bgOpen}
+            anchorEl={bgAnchor}
+            onClose={closeBgPicker}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <SketchPicker color={bgColor} onChange={handleBgChange} />
+          </Popover>
+
+
           <Box sx={{ width: 120 }}>
             <Slider
               value={strokeWidth}

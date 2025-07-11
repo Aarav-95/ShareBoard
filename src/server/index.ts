@@ -29,6 +29,21 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('draw', stroke);
   });
 
+  socket.on('text', (data) => {
+    const { roomId, x, y, text, fontFamily, fontSize, color } = data;
+    history[roomId] = history[roomId] || [];
+    // store exactly the same payload so we can replay it later
+    history[roomId].push({ x, y, text, fontFamily, fontSize, color, type: 'text' });
+    // broadcast to everyone else
+    socket.to(roomId).emit('text', { x, y, text, fontFamily, fontSize, color });
+  });
+
+  socket.on("bgColor", (data: { roomId: string; color: string }) => {
+    const { roomId, color } = data;
+    history[roomId] = history[roomId] || [];
+    history[roomId].push({ type: "bgColor", color });
+    io.to(roomId).emit("bgColor", color);
+  });
   // Clear board:
   socket.on('clear', (roomId: string) => {
     history[roomId] = [];

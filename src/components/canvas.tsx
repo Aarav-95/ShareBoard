@@ -34,15 +34,22 @@ const Canvas: React.FC<CanvasProps> = ({
   const [path, setPath] = useState<{ x: number; y: number }[]>([]);
 
   // Initialize canvas and fill background
+
   useEffect(() => {
     const canvas = canvasRef.current!;
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     const ctx = canvas.getContext('2d')!;
+    ctx.lineCap = 'round';
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineCap = 'round';
-  }, [bgColor]);
+    socketRef.current?.emit('bgColor', { roomId, color: bgColor });
+  }, [bgColor, roomId]);
 
   // Clear on signal
   useEffect(() => {
@@ -50,17 +57,28 @@ const Canvas: React.FC<CanvasProps> = ({
     const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }, [clearSignal, bgColor]);
+    socketRef.current?.emit('clear', roomId);
+  }, [clearSignal, bgColor, roomId]);
 
   // Socket connection & events
   useEffect(() => {
     socketRef.current = io('http://localhost:3001');
     socketRef.current.emit('joinRoom', roomId);
 
-    socketRef.current.on('history', (strokes: any[]) => {
+    socketRef.current.on('history', (items: any[]) => {
+      const canvas = canvasRef.current!;
       const ctx = canvasRef.current!.getContext('2d')!;
-      strokes.forEach((st) => replayStroke(ctx, st));
-    });
+    items.forEach((item) => {
+      if (item.type === "bgColor") {
+        ctx.fillStyle = item.color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (item.type === "text") {
+        drawText(ctx, item);
+      } else {
+        // default to stroke
+        replayStroke(ctx, item);
+      }
+    })});
 
     socketRef.current.on('draw', (st: any) => {
       const ctx = canvasRef.current!.getContext('2d')!;
@@ -76,6 +94,13 @@ const Canvas: React.FC<CanvasProps> = ({
     socketRef.current.on('text', (data: any) => {
       const ctx = canvasRef.current!.getContext('2d')!;
       drawText(ctx, data);
+    });
+
+    socketRef.current.on("bgColor", (color: string) => {
+      const canvas = canvasRef.current!;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     });
 
     return () => {

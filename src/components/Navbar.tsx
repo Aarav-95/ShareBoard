@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Snackbar, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Snackbar, Button, Box } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
@@ -19,16 +19,35 @@ const Navbar: React.FC<NavbarProps> = ({ roomId, onLeave }) => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        overflow: 'hidden',
+        boxShadow: 1,
+      }}
+    >
       <AppBar position="static" color="transparent" elevation={0} sx={{ background: 'linear-gradient(to bottom right, #BBDEFB, #E1BEE7, #F8BBD0)' }}>
         <Toolbar>
         <div style ={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-          <Typography variant="h6" component="div" sx={{ color: 'text.primary' }}>
-            Room: {roomId}
+          <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '2rem', color: '#1F2937' }}>ShareBoard</Typography>
+          <Typography variant="h6" component="div" sx={{ color: 'text.primary', ml: 5, fontSize: '1rem' }}>
+            Room:
           </Typography>
 
-          <IconButton onClick={handleCopy} color="default" sx ={{ ml: 2}}>
-            <ContentCopyIcon />
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              padding: '4px 12px',
+              display: 'inline-block',
+              ml: 1
+            }}
+          >
+            <Typography variant="h6" component="div" sx={{ color: 'text.primary', fontSize: '1rem' }}>
+              {roomId}
+            </Typography>
+          </Box>
+          <IconButton onClick={handleCopy} color="default">
+            <ContentCopyIcon fontSize="small"/>
           </IconButton>
         </div>
           <Button
@@ -49,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ roomId, onLeave }) => {
         message="Link copied!"
         onClose={() => setSnackbarOpen(false)}
       />
-    </>
+    </Box>
   );
 };
 
