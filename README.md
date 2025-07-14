@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎨 ShareBoard
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-100000?style=for-the-badge&logo=next.js&logoColor=whitee)](https://nextjs.org) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org) [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org) [![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org) [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 
-First, run the development server:
+> A modern, real-time collaborative whiteboard app for remote teams, brainstorming, and online tutoring.
+
+---
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Getting Started](#-getting-started) 
+  - [Installation](#installation)  
+  - [Running the App](#running-the-app)  
+- [🎨 Usage](#-usage)
+
+---
+
+## ✨ Features
+
+- 🖌 **Freehand Drawing**: Adjustable pen/eraser, stroke width, and color picker.  
+- 🆎 **Text Annotations**: Insert styled text with font, size, and color controls.  
+- 🌈 **Background Color**: Dynamic canvas background updates via custom color picker.  
+- 🔄 **Real-Time Sync**: Instant updates across all connected clients using Socket.IO.  
+- 🔒 **Multi-Room Support**: Unique room URLs isolate sessions.  
+- 🕒 **Persistent History**: New joiners see full replay of past strokes, text, and bg changes.  
+- 🧹 **Clear Board**: Reset canvas for everyone, live and on reload.  
+- 📱 **Responsive Design**: Full-screen canvas and floating toolbar adapt to any device.
+
+---
+
+## 🛠️ Tech Stack
+
+| Category         | Technology                                                                                   |
+|------------------|----------------------------------------------------------------------------------------------|
+| **Frontend**     | Next.js, React, Tailwind CSS                                                                |
+| **Backend**      | Node.js, Express, Socket.IO                                                                  |
+| **Database**     | PostgreSQL (via Prisma ORM)                                                                  |
+| **Styling**      | Tailwind CSS, Material-UI                                                                    |
+| **Utilities**    | TypeScript, Docker, ESLint, Prettier                                                         |
+| **Color Picker** | react-color (SketchPicker)                                                                   |
+
+---
+
+## 🚀 Getting Started
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone repo
+git clone https://github.com/your-username/shareboard.git
+cd shareboard
+
+# Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the App
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Start server (Socket.IO on :3001)
+npm run server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Start client (Next.js on :3000)
+npm run dev
+```
 
-## Learn More
+## 🎨 Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Create/Join a Room**  
+   Navigate to `http://localhost:3000/room/<roomId>` or share the URL with collaborators.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Draw & Erase**  
+   - Click the pen/brush icon to draw freehand.  
+   - Click the eraser icon to erase.  
+   - Adjust stroke width with the slider.  
+   - Pick pen color from the color picker.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Text Mode**  
+   - Click the text icon to enter Text Mode.  
+   - Type your text in the input field.  
+   - Select font family and font size.  
+   - Click anywhere on the canvas to place the text.
 
-## Deploy on Vercel
+4. **Background Color**  
+   - Click the background-color swatch in the toolbar.  
+   - Choose a new background color from the custom picker.  
+   - The new color applies instantly for all participants.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Clear Board**  
+   - Click the trash/clear icon to reset the canvas for everyone.  
+   - New joiners will see the cleared board (no past strokes or text).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. **Real-Time Collaboration**  
+   - All drawing, text, and background changes sync immediately across connected clients.  
+   - New users joining a room receive the full history (strokes, text, and background).
+
