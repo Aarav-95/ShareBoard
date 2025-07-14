@@ -50,7 +50,7 @@
 ```bash
 # Clone repo
 git clone https://github.com/Aarav-95/ShareBoard.git
-cd shareboard
+cd ShareBoard
 
 # Install dependencies
 npm install
