@@ -49,7 +49,7 @@
 
 ```bash
 # Clone repo
-git clone https://github.com/your-username/shareboard.git
+git clone https://github.com/Aarav-95/ShareBoard.git
 cd shareboard
 
 # Install dependencies
